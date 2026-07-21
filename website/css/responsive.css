@@ -1,0 +1,129 @@
+/* responsive.css */
+
+/* Large laptops */
+@media (max-width: 1200px){
+    section{
+        width:92%;
+    }
+
+    .hero h1{
+        font-size:2.8rem;
+    }
+}
+
+/* Tablets */
+@media (max-width: 992px){
+
+    nav{
+        padding:16px 5%;
+    }
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .status-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .hero h1{
+        font-size:2.5rem;
+    }
+
+    .hero p{
+        font-size:1.05rem;
+    }
+
+    .node,
+    .box{
+        min-width:220px;
+    }
+}
+
+/* Mobile */
+@media (max-width:768px){
+
+    nav{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    nav ul{
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:18px;
+    }
+
+    header{
+        min-height:80vh;
+        padding:30px 20px;
+    }
+
+    .hero h1{
+        font-size:2rem;
+    }
+
+    .hero p{
+        font-size:1rem;
+    }
+
+    button{
+        width:100%;
+        max-width:280px;
+    }
+
+    .cards,
+    .status-grid{
+        grid-template-columns:1fr;
+    }
+
+    .row{
+        flex-direction:column;
+        width:100%;
+        align-items:center;
+    }
+
+    .node,
+    .box{
+        width:100%;
+        max-width:320px;
+    }
+
+    section{
+        padding:70px 0;
+    }
+
+    h2{
+        font-size:1.8rem;
+    }
+}
+
+/* Small phones */
+@media (max-width:480px){
+
+    .logo{
+        font-size:1.2rem;
+    }
+
+    .hero h1{
+        font-size:1.7rem;
+    }
+
+    .hero p{
+        font-size:.95rem;
+    }
+
+    .card,
+    .status-card{
+        padding:20px;
+    }
+
+    .icon{
+        font-size:2.3rem;
+    }
+
+    footer{
+        font-size:.9rem;
+        padding:20px;
+    }
+}

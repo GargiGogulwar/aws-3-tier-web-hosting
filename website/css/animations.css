@@ -1,0 +1,166 @@
+/* animations.css */
+
+/* Fade In */
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* Slide From Left */
+@keyframes slideLeft{
+    from{
+        opacity:0;
+        transform:translateX(-50px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+/* Slide From Right */
+@keyframes slideRight{
+    from{
+        opacity:0;
+        transform:translateX(50px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+/* Floating Effect */
+@keyframes float{
+    0%{
+        transform:translateY(0px);
+    }
+    50%{
+        transform:translateY(-10px);
+    }
+    100%{
+        transform:translateY(0px);
+    }
+}
+
+/* Pulse */
+@keyframes pulse{
+    0%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.05);
+    }
+    100%{
+        transform:scale(1);
+    }
+}
+
+/* Glow */
+@keyframes glow{
+    0%{
+        box-shadow:0 0 5px rgba(88,166,255,.2);
+    }
+    50%{
+        box-shadow:0 0 25px rgba(88,166,255,.7);
+    }
+    100%{
+        box-shadow:0 0 5px rgba(88,166,255,.2);
+    }
+}
+
+/* Background Animation */
+@keyframes gradientMove{
+    0%{
+        background-position:0% 50%;
+    }
+    50%{
+        background-position:100% 50%;
+    }
+    100%{
+        background-position:0% 50%;
+    }
+}
+
+/* Hero */
+.hero{
+    animation:fadeIn 1s ease;
+}
+
+.hero button{
+    animation:pulse 2s infinite;
+}
+
+/* Cards */
+.card{
+    animation:fadeIn .8s ease;
+}
+
+.card:hover{
+    animation:float 2s ease-in-out infinite;
+}
+
+/* Status Cards */
+.status-card:hover{
+    animation:glow 1.5s infinite;
+}
+
+/* Architecture */
+.node{
+    animation:slideLeft .8s ease;
+}
+
+.box{
+    animation:slideRight .8s ease;
+}
+
+/* Header Background */
+header{
+    background-size:300% 300%;
+    animation:gradientMove 12s ease infinite;
+}
+
+/* Button Hover */
+button{
+    transition:all .3s ease;
+}
+
+button:hover{
+    transform:translateY(-4px) scale(1.03);
+}
+
+/* Navigation Links */
+nav a{
+    position:relative;
+}
+
+nav a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-4px;
+    width:0;
+    height:2px;
+    background:#58a6ff;
+    transition:.3s;
+}
+
+nav a:hover::after{
+    width:100%;
+}
+
+/* Section Titles */
+h2{
+    animation:fadeIn 1s ease;
+}
+
+/* Footer */
+footer{
+    animation:fadeIn 1.2s ease;
+}
