@@ -1,0 +1,16 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# AWS Keys
+*.pem
+*.key
+
+# Node.js
+node_modules/
+
+# Environment variables
+.env
