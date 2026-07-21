@@ -173,8 +173,4 @@ Amazon RDS could not be configured due to AWS Free Plan limitations. However, th
 
 **Gargi Gogulwar**
 
-B.Tech Computer Science & Engineering
-
-PCCOE, Pune
-
 GitHub: https://github.com/GargiGogulwar
