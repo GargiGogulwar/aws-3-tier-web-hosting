@@ -1,112 +1,155 @@
-# Bastion Host
+# Application Load Balancer (ALB)
 
 ## Overview
 
-A Bastion Host is a secure EC2 instance deployed in a public subnet that serves as the only entry point for administrators to access resources located in private subnets. It eliminates the need to expose private instances directly to the internet, significantly improving the overall security of the infrastructure.
+An Application Load Balancer (ALB) is a Layer 7 load balancer provided by AWS Elastic Load Balancing (ELB). It distributes incoming HTTP and HTTPS requests across multiple application servers, improving availability, scalability, and fault tolerance.
 
-In this project, the Bastion Host was used to securely manage the Apache application servers and the PostgreSQL database server.
+In this project, an Internet-facing Application Load Balancer receives client requests and securely forwards them to the Apache web servers deployed in private subnets.
 
 ---
 
 ## Objectives
 
-The Bastion Host was deployed to:
+The Application Load Balancer was configured to:
 
-- Provide secure SSH access to private EC2 instances.
-- Prevent direct internet access to backend servers.
-- Centralize administrative access.
-- Improve the security of the AWS infrastructure.
+- Distribute incoming traffic across multiple application servers.
+- Improve application availability.
+- Eliminate single points of failure.
+- Route requests only to healthy application servers.
+- Secure communication between the load balancer and backend servers.
 
 ---
 
 ## Architecture
 
 ```text
-Administrator
-      │
- SSH (22)
-      │
-      ▼
-Bastion Host
-(Public Subnet)
-      │
- SSH (22)
-      ▼
-Private Application Servers
-      │
-      ▼
-PostgreSQL Database Server
+                 Internet
+                     │
+             HTTP/HTTPS Request
+                     │
+                     ▼
+      Application Load Balancer (Public)
+                     │
+         ┌───────────┴───────────┐
+         ▼                       ▼
+  App Server 1             App Server 2
+     (Private)               (Private)
 ```
 
 ---
 
-## Deployment
+## Configuration
 
-| Resource | Configuration |
-|----------|---------------|
-| Instance Type | Amazon EC2 |
-| Subnet | Public Subnet |
-| Public IP | Enabled |
-| Internet Access | Yes |
-| Security Group | Allows SSH from Administrator IP |
+| Property | Value |
+|----------|-------|
+| Load Balancer Type | Application Load Balancer |
+| Scheme | Internet-facing |
+| Listener | HTTP (80) |
+| Target Type | EC2 Instances |
+| Backend Protocol | HTTPS (443) |
+| Health Check | HTTPS |
 
 ---
 
-## Security Group Configuration
+## Listener Configuration
 
-### Inbound Rules
+The Application Load Balancer listens for incoming HTTP requests from users and forwards them to the target group containing the Apache web servers.
 
-| Protocol | Port | Source |
+### Listener
+
+| Protocol | Port | Action |
 |----------|------|--------|
-| SSH | 22 | Administrator Public IP |
-
-### Outbound Rules
-
-| Protocol | Port | Destination |
-|----------|------|-------------|
-| SSH | 22 | Private Application Servers |
-| SSH | 22 | PostgreSQL Database Server |
+| HTTP | 80 | Forward to Target Group |
 
 ---
 
-## SSH Workflow
+## Target Group
 
-The administrator first connects to the Bastion Host using SSH. From the Bastion Host, SSH access is established to the private application servers and the PostgreSQL database server.
+The Target Group contains the backend application servers that process client requests.
 
-This approach ensures that private instances remain inaccessible from the public internet.
+### Configuration
+
+| Property | Value |
+|----------|-------|
+| Target Type | Instances |
+| Protocol | HTTPS |
+| Port | 443 |
+| Health Check Protocol | HTTPS |
+
+The Application Load Balancer continuously monitors the health of each target. Requests are forwarded only to healthy application servers.
 
 ---
 
-## Advantages
+## Health Checks
 
-- Eliminates direct SSH access to private instances.
-- Centralized and controlled administrative access.
-- Reduces the attack surface of the infrastructure.
-- Enhances overall security.
-- Follows AWS security best practices.
+Health checks verify whether each application server is capable of serving requests.
+
+### Configuration
+
+| Setting | Value |
+|----------|-------|
+| Protocol | HTTPS |
+| Port | 443 |
+| Path | / |
+| Healthy Threshold | Default AWS Configuration |
+| Unhealthy Threshold | Default AWS Configuration |
+
+Only healthy instances receive user traffic.
 
 ---
 
-## Security Best Practices
+## Request Flow
 
-- Allow SSH access only from trusted IP addresses.
-- Store private key files securely.
-- Disable unnecessary services on the Bastion Host.
-- Regularly update the operating system and installed packages.
-- Monitor SSH login activity.
+```text
+User
+ │
+ ▼
+Application Load Balancer
+ │
+ ├──────────────► App Server 1
+ │
+ └──────────────► App Server 2
+```
+
+The Application Load Balancer automatically distributes traffic between the available backend servers.
+
+---
+
+## High Availability
+
+The Application Load Balancer improves application reliability by:
+
+- Distributing incoming traffic evenly.
+- Detecting unhealthy instances.
+- Routing requests only to healthy servers.
+- Supporting deployments across multiple Availability Zones.
+
+---
+
+## Security
+
+The Application Load Balancer is protected using a dedicated Security Group.
+
+Security measures include:
+
+- Accepts HTTP traffic from the internet.
+- Communicates securely with backend servers over HTTPS.
+- Application servers remain inaccessible directly from the internet.
+- Backend communication is encrypted using SSL.
 
 ---
 
 ## Benefits
 
-- Secure remote administration
-- Improved network isolation
-- Reduced exposure to external threats
-- Controlled access to private resources
-- Easy management of backend infrastructure
+- Improved scalability
+- High availability
+- Automatic traffic distribution
+- Continuous health monitoring
+- Secure backend communication
+- Better fault tolerance
 
 ---
 
 ## Outcome
 
-The Bastion Host provides a secure gateway for managing private EC2 instances without exposing them directly to the internet. By acting as the single point of administrative access, it strengthens the security of the three-tier architecture while enabling efficient infrastructure management.
+The Application Load Balancer serves as the entry point for the web application by distributing incoming requests across multiple Apache web servers. Combined with health checks and backend HTTPS communication, it provides a highly available, secure, and reliable application delivery layer for the AWS three-tier architecture.
