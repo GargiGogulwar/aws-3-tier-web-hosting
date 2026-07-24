@@ -5,15 +5,46 @@ This project demonstrates a secure and scalable 3-tier web application architect
 
 ## Architecture
 
-Client
-↓
-Application Load Balancer (Public)
-↓
-HTTPS
-↓
-Apache Web Servers (Private Subnets)
-↓
-PostgreSQL Database Server (Private Subnet)
+                                    INTERNET
+                                        │
+                                        ▼
+                             ┌─────────────────────┐
+                             │       Users         │
+                             └─────────────────────┘
+                                        │
+                                  HTTP (80)
+                                        │
+                                        ▼
+                  ┌─────────────────────────────────────┐
+                  │ Application Load Balancer (Public)  │
+                  └─────────────────────────────────────┘
+                               │                │
+                     HTTPS (443)│                │HTTPS (443)
+                               ▼                ▼
+        ┌────────────────────────────┐   ┌────────────────────────────┐
+        │        App Server 1         │   │        App Server 2         │
+        │    Apache + SSL (Private)   │   │    Apache + SSL (Private)   │
+        └────────────────────────────┘   └────────────────────────────┘
+                     │                               │
+                     └───────────────┬───────────────┘
+                                     │
+                            PostgreSQL (5432)
+                                     │
+                                     ▼
+                    ┌────────────────────────────┐
+                    │ PostgreSQL DB Server (EC2) │
+                    │       Private Subnet       │
+                    └────────────────────────────┘
+
+                    ▲
+                    │ SSH (22)
+            ┌──────────────────────┐
+            │    Bastion Host       │
+            │     Public Subnet     │
+            └──────────────────────┘
+                    ▲
+                    │
+               Administrator
 
 ## AWS Services Used
 
