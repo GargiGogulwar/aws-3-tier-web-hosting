@@ -239,7 +239,7 @@ AWS-3Tier-Web-Hosting/
 
 <p align="center">
   <img src="architecture/Architecture.png" alt="AWS 3-Tier Web Hosting Architecture" width="900">
-</p>
+</p> 
 
 This project demonstrates a secure and highly available **3-tier web application architecture** deployed on **Amazon Web Services (AWS)**. The infrastructure follows AWS best practices by separating the presentation, application, and database layers into different network tiers.
 
