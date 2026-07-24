@@ -1,3 +1,4 @@
+<<<<<<< HEAD:docs/08-rds.md
 # PostgreSQL Database Server
 
 ## Overview
@@ -139,3 +140,39 @@ The following security practices were implemented:
 ## Outcome
 
 The PostgreSQL Database Server provides a secure and reliable data storage solution for the web application. By deploying the database on a dedicated EC2 instance within a private subnet, the architecture ensures that sensitive data remains protected while allowing only authorized application servers to establish database connections. This implementation satisfies the project requirements while following secure AWS infrastructure design principles.
+=======
+# Amazon RDS
+
+## Overview
+
+Amazon RDS was planned as the database tier for this 3-tier architecture.
+
+The database would be deployed in private database subnets to ensure secure access from the application servers only.
+
+## Planned Configuration
+
+- Engine: MySQL
+- Deployment: Private Subnets
+- Multi-AZ: Optional
+- Public Access: Disabled
+- Access: Only from EC2 Application Servers
+
+## Architecture
+
+Internet
+        │
+        ▼
+Application Load Balancer
+        │
+        ▼
+EC2 Application Servers
+        │
+        ▼
+Amazon RDS (Private Subnets)
+
+## Note
+
+Amazon RDS was not deployed because the AWS Free Plan account restricted the required RDS configuration.
+
+The rest of the architecture, including networking, Bastion Host, EC2 instances, Application Load Balancer, and website deployment, was successfully implemented and tested.
+>>>>>>> d847447 (Add deployment and troubleshooting documentation):docs/08-Postgresql-server.md
