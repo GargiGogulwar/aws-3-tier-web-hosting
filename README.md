@@ -45,3 +45,9 @@ PostgreSQL Database Server (Private Subnet)
 - Website accessible via ALB DNS
 - Target Group Health Checks: Healthy
 - HTTPS communication between ALB and App Servers
+## Security
+
+- HTTPS communication between the Application Load Balancer and Apache web servers.
+- Self-signed SSL certificates installed on backend EC2 instances.
+- Application servers deployed in private subnets.
+- SSH access only through the Bastion Host.
