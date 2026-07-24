@@ -1,84 +1,247 @@
+<div align="center">
+
 # AWS 3-Tier Web Hosting Architecture
 
-## Overview
-This project demonstrates a secure and scalable 3-tier web application architecture on AWS using VPC networking, private subnets, an Application Load Balancer, Apache web servers, and a PostgreSQL database.
+A secure and scalable **3-Tier Web Application Architecture** built on **Amazon Web Services (AWS)** using Virtual Private Cloud (VPC), Application Load Balancer, Apache Web Servers, and PostgreSQL Database Server.
 
-## Architecture
+![AWS](https://img.shields.io/badge/AWS-Cloud-orange?style=for-the-badge&logo=amazonaws)
+![EC2](https://img.shields.io/badge/EC2-Compute-blue?style=for-the-badge)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791?style=for-the-badge&logo=postgresql)
+![Apache](https://img.shields.io/badge/Apache-Web%20Server-D22128?style=for-the-badge&logo=apache)
+![Linux](https://img.shields.io/badge/Linux-Amazon%20Linux-black?style=for-the-badge&logo=linux)
 
-                                    INTERNET
-                                        │
-                                        ▼
-                             ┌─────────────────────┐
-                             │       Users         │
-                             └─────────────────────┘
-                                        │
-                                  HTTP (80)
-                                        │
-                                        ▼
-                  ┌─────────────────────────────────────┐
-                  │ Application Load Balancer (Public)  │
-                  └─────────────────────────────────────┘
-                               │                │
-                     HTTPS (443)│                │HTTPS (443)
-                               ▼                ▼
-        ┌────────────────────────────┐   ┌────────────────────────────┐
-        │        App Server 1         │   │        App Server 2         │
-        │    Apache + SSL (Private)   │   │    Apache + SSL (Private)   │
-        └────────────────────────────┘   └────────────────────────────┘
-                     │                               │
-                     └───────────────┬───────────────┘
-                                     │
-                            PostgreSQL (5432)
-                                     │
-                                     ▼
-                    ┌────────────────────────────┐
-                    │ PostgreSQL DB Server (EC2) │
-                    │       Private Subnet       │
-                    └────────────────────────────┘
+</div>
 
-                    ▲
-                    │ SSH (22)
-            ┌──────────────────────┐
-            │    Bastion Host       │
-            │     Public Subnet     │
-            └──────────────────────┘
-                    ▲
+---
+
+# Project Overview
+
+This project demonstrates the deployment of a secure and highly available **3-Tier Web Application Architecture** on AWS. The infrastructure follows AWS networking and security best practices by separating the presentation, application, and database layers into isolated components.
+
+The application is hosted on Apache web servers deployed in private subnets, while client requests are managed through an Internet-facing Application Load Balancer. A dedicated PostgreSQL database server stores application data securely within a private subnet. Administrative access is provided exclusively through a Bastion Host.
+
+---
+
+# Architecture
+
+<p align="center">
+<img src="docs/architecture.png" width="900">
+</p>
+
+---
+
+# Architecture Components
+
+| Layer | AWS Service |
+|---------|------------|
+| Network | Amazon VPC |
+| Internet Access | Internet Gateway |
+| Outbound Internet | NAT Gateway |
+| Load Balancing | Application Load Balancer |
+| Compute | Amazon EC2 |
+| Web Server | Apache HTTP Server |
+| Database | PostgreSQL on EC2 |
+| Secure Administration | Bastion Host |
+| Security | Security Groups & Network ACLs |
+
+---
+
+# Features
+
+- Custom Amazon VPC
+- Public & Private Subnets
+- Internet Gateway
+- NAT Gateway
+- Bastion Host
+- Application Load Balancer
+- Apache Web Servers
+- Backend HTTPS Communication
+- PostgreSQL Database Server
+- Security Groups
+- Network ACLs
+- Route Tables
+- High Availability
+- Health Checks
+- Secure SSH Access
+- Three-Tier Architecture
+
+---
+
+# Architecture Flow
+
+```text
+                Internet
                     │
-               Administrator
+                    ▼
+      Application Load Balancer
+                    │
+          HTTPS Backend Traffic
+        ┌───────────┴───────────┐
+        ▼                       ▼
+ Application Server 1     Application Server 2
+        │                       │
+        └───────────┬───────────┘
+                    │
+             PostgreSQL Server
+              (Private Subnet)
 
-## AWS Services Used
+Administrator
+      │
+ SSH
+      ▼
+ Bastion Host
+```
 
+---
+
+# AWS Services Used
+
+- Amazon EC2
 - Amazon VPC
 - Public & Private Subnets
 - Internet Gateway
 - NAT Gateway
-- EC2 (Bastion Host)
-- EC2 (2 Apache App Servers)
-- EC2 (PostgreSQL Database)
 - Application Load Balancer
 - Target Groups
+- Route Tables
 - Security Groups
 - Network ACLs
-- Route Tables
+- Elastic IP
+- Amazon Linux
+- Apache HTTP Server
+- PostgreSQL
 
-## Features
+---
 
-- Secure 3-tier architecture
-- Private application servers
-- Bastion host for secure SSH access
-- Application Load Balancer
-- End-to-end backend HTTPS (ALB → EC2)
-- PostgreSQL database
-- High availability across Availability Zones
+# Project Structure
 
-## Testing
+```text
+AWS-3Tier-Web-Hosting/
+│
+├── docs/
+│   ├── 01-vpc.md
+│   ├── 02-subnets.md
+│   ├── 03-route-tables.md
+│   ├── 04-security-groups.md
+│   ├── 05-network-acls.md
+│   ├── 06-ec2-instances.md
+│   ├── 07-bastion-host.md
+│   ├── 08-application-load-balancer.md
+│   ├── 09-postgresql-server.md
+│   ├── 10-testing-validation.md
+│   ├── 11-deployment-steps.md
+│   ├── 12-troubleshooting.md
+│   └── architecture.png
+│
+├── screenshots/
+├── Architecture.md
+├── LICENSE
+└── README.md
+```
 
-- Website accessible via ALB DNS
-- Target Group Health Checks: Healthy
-- HTTPS communication between ALB and App Servers
-## Security
+---
 
-- HTTPS communication between the Application Load Balancer and Apache web servers.
-- Self-signed SSL certificates installed on backend EC2 instances.
+# Security Implementation
+
 - Application servers deployed in private subnets.
+- PostgreSQL server isolated in a private subnet.
 - SSH access only through the Bastion Host.
+- Security Groups used as instance-level firewalls.
+- Network ACLs provide subnet-level protection.
+- HTTPS enabled between the Application Load Balancer and backend web servers.
+- Database accessible only from application servers.
+
+---
+
+# Deployment Workflow
+
+1. Create a custom VPC.
+2. Configure public and private subnets.
+3. Attach the Internet Gateway.
+4. Configure the NAT Gateway.
+5. Create Route Tables.
+6. Configure Security Groups.
+7. Configure Network ACLs.
+8. Launch the Bastion Host.
+9. Launch two Apache Web Servers.
+10. Launch the PostgreSQL Database Server.
+11. Configure Apache and backend HTTPS.
+12. Create the Application Load Balancer.
+13. Configure Target Groups and Health Checks.
+14. Validate application accessibility through the ALB.
+
+---
+
+# Testing & Validation
+
+✔ Website successfully accessible through the Application Load Balancer.
+
+✔ Target Group Health Checks passed.
+
+✔ Backend HTTPS communication established.
+
+✔ SSH access verified through the Bastion Host.
+
+✔ PostgreSQL connectivity verified.
+
+✔ Network security validated using Security Groups and Network ACLs.
+
+---
+
+# Challenges Faced
+
+| Issue | Resolution |
+|------|------------|
+| Target Group Unhealthy | Corrected Network ACL configuration |
+| HTTPS Timeout | Updated Security Groups and NACL rules |
+| Apache SSL Configuration | Configured self-signed SSL certificates |
+| Backend Connectivity | Verified routing and listener configuration |
+| Health Check Failures | Fixed HTTPS access between ALB and EC2 |
+
+---
+
+# Documentation
+
+| Document | Description |
+|----------|-------------|
+| VPC | Virtual Private Cloud Configuration |
+| Subnets | Public & Private Subnets |
+| Route Tables | Traffic Routing |
+| Security Groups | Instance-Level Firewall |
+| Network ACLs | Subnet-Level Security |
+| EC2 Instances | Compute Resources |
+| Bastion Host | Secure SSH Access |
+| Application Load Balancer | Traffic Distribution |
+| PostgreSQL Server | Database Layer |
+| Testing & Validation | Infrastructure Testing |
+| Deployment Steps | Complete Deployment Guide |
+| Troubleshooting | Common Issues & Solutions |
+
+---
+
+# Future Improvements
+
+- Auto Scaling Group
+- Amazon RDS PostgreSQL
+- AWS Certificate Manager (ACM)
+- Route 53 Custom Domain
+- AWS WAF
+- CloudWatch Monitoring
+- AWS Backup
+- Terraform Infrastructure as Code
+- CI/CD using GitHub Actions
+
+---
+
+# Author
+
+**Gargi Gogulwar**
+
+B.Tech Computer Engineering  
+Pimpri Chinchwad College of Engineering
+
+GitHub: https://github.com/GargiGogulwar
+
+---
+
+## If you found this project useful, consider giving it a ⭐ on GitHub!
