@@ -233,6 +233,50 @@ AWS-3Tier-Web-Hosting/
 
 ---
 
+# AWS 3-Tier Web Hosting Architecture
+
+## Architecture
+
+<p align="center">
+  <img src="architecture/Architecture.png" alt="AWS 3-Tier Web Hosting Architecture" width="900">
+</p>
+
+This project demonstrates a secure and highly available **3-tier web application architecture** deployed on **Amazon Web Services (AWS)**. The infrastructure follows AWS best practices by separating the presentation, application, and database layers into different network tiers.
+
+### Architecture Components
+
+- **Amazon VPC** with public and private subnets
+- **Internet Gateway** for public internet access
+- **NAT Gateway** for outbound internet access from private subnets
+- **Bastion Host** for secure SSH access
+- **Application Load Balancer (ALB)** to distribute incoming traffic
+- **Two Apache Web Servers (EC2)** in private subnets
+- **PostgreSQL Database Server (EC2)** in a private subnet
+- **Security Groups** and **Network ACLs** for network security
+- **Route Tables** for traffic routing
+
+## Project Structure
+
+```
+aws-3-tier-web-hosting/
+├── architecture/
+│   └── Architecture.png
+├── docs/
+├── screenshots/
+├── website/
+└── README.md
+```
+
+## Features
+
+- Highly available web application deployment
+- Secure three-tier architecture
+- Load-balanced application servers
+- Private database server
+- Secure Bastion Host administration
+- Layered network security
+- Step-by-step deployment documentation
+
 # Author
 
 **Gargi Gogulwar**
